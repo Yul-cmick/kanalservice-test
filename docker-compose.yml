@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  backend:
+    restart: always
+    build: server/backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  frontend:
+    restart: always
+    build: server/frontend
+    ports:
+      - "8080:3000"
+    depends_on:
+      - backend
+  db:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
