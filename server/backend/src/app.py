@@ -1,11 +1,18 @@
 from flask import Flask, jsonify, make_response
+import os
 import psycopg2
 
+# Environment variables
+POSTGRES_DB = os.environ['POSTGRES_DB']
+POSTGRES_USER = os.environ['POSTGRES_USER']
+POSTGRES_PASSWORD = os.environ['POSTGRES_PASSWORD']
+POSTGRES_HOST = os.environ['POSTGRES_HOST']
+
 conn = psycopg2.connect(
-    dbname='postgres',
-    user='postgres',
-    password='mysecretpassword',
-    host='db')
+    dbname=POSTGRES_DB,
+    user=POSTGRES_USER,
+    password=POSTGRES_PASSWORD,
+    host=POSTGRES_HOST)
 
 # Create table if not exist
 cur = conn.cursor()

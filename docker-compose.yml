@@ -5,6 +5,8 @@ services:
     build: server/backend
     ports:
       - "5000:5000"
+    env_file:
+      - postgres-variables.env
     depends_on:
       - db
   frontend:
@@ -18,7 +20,17 @@ services:
     image: postgres:14-alpine
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: postgres
+    env_file:
+      - postgres-variables.env
+  worker:
+    restart: always
+    build: worker
+    volumes:
+      - ./worker/credentials:/credentials
+    env_file:
+      - postgres-variables.env
+      - spreadsheet-variables.env
+      - telegram-variables.env
+    depends_on:
+      - db
+      - backend
